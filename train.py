@@ -88,7 +88,7 @@ def make_dataset():
             tfs.ToTensor(),
             tfs.Normalize(mean=[.5, .5, .5], std=[.5, .5, .5]),
             tfs.Lambda(noise)])
-        data = CIFAR10(root=opt.root, train=True, download=False, transform=trans)
+        data = CIFAR10(root=opt.root, train=True, download=True, transform=trans)
         loader = DataLoader(data, batch_size=opt.batch_size, shuffle=True, num_workers=opt.workers)
     elif opt.dataset == "dog_and_cat_64":
         trans = tfs.Compose([
