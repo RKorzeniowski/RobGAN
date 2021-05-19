@@ -167,8 +167,7 @@ def train():
             x_real, y_real = x_real.cuda(), y_real.cuda()
             v_x_real, v_y_real = Variable(x_real), Variable(y_real)
             # find adversarial example
-            import pdb;pdb.set_trace()
-            ones.data.resize_(y_real.size())
+            ones = ones.reshape(y_real.size())
             v_x_real_adv = attack_Linf_PGD(v_x_real, ones, v_y_real, dis, Ld, opt.adv_steps, opt.epsilon)
             d_real_bin, d_real_multi = dis(v_x_real_adv)
             # accuracy for real images
