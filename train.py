@@ -157,8 +157,9 @@ def train():
                 v_x_fake = gen(vz, y=v_y_fake)
                 v_x_fake_adv = v_x_fake
                 d_fake_bin, d_fake_multi = dis(v_x_fake_adv)
-                with torch.no_grad():
-                    ones.resize_as_(d_fake_bin.data)
+                # with torch.no_grad():
+                #     ones.resize_as_(d_fake_bin.data)
+                ones.data.resize_as_(d_fake_bin.data)
                 loss_g = Lg(d_fake_bin, ones, d_fake_multi, v_y_fake, lam=0.5)
                 loss_g.backward()
                 opt_g.step()
@@ -206,7 +207,7 @@ def train():
             fixed_x_fake = gen(fixed_z, y=fixed_y_fake)
             fixed_x_fake.data.mul_(0.5).add_(0.5)
         x_real.mul_(0.5).add_(0.5)
-        Path(f"./{opt.out_f}").mkdir()
+        Path(f"./{opt.out_f}").mkdir(exist_ok=True, parents=True)
         save_image(fixed_x_fake.data, f'./{opt.out_f}/sample_epoch_{epoch}.png', nrow=8)
         save_image(x_real, f'./{opt.out_f}/real.png')
         # save model
