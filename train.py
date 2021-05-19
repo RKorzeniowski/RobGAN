@@ -205,7 +205,7 @@ def train():
             fixed_x_fake = gen(fixed_z, y=fixed_y_fake)
             fixed_x_fake.data.mul_(0.5).add_(0.5)
         x_real.mul_(0.5).add_(0.5)
-        Path("./{opt.out_f}").mkdir()
+        Path(f"./{opt.out_f}").mkdir()
         save_image(fixed_x_fake.data, f'./{opt.out_f}/sample_epoch_{epoch}.png', nrow=8)
         save_image(x_real, f'./{opt.out_f}/real.png')
         # save model
