@@ -157,9 +157,8 @@ def train():
                 v_x_fake = gen(vz, y=v_y_fake)
                 v_x_fake_adv = v_x_fake
                 d_fake_bin, d_fake_multi = dis(v_x_fake_adv)
-                # with torch.no_grad():
-                #     ones.resize_as_(d_fake_bin.data)
-                ones.data.resize_as_(d_fake_bin.data)
+                with torch.no_grad():
+                    ones.resize_as_(d_fake_bin.data)
                 loss_g = Lg(d_fake_bin, ones, d_fake_multi, v_y_fake, lam=0.5)
                 loss_g.backward()
                 opt_g.step()
@@ -170,9 +169,8 @@ def train():
             x_real, y_real = x_real.cuda(), y_real.cuda()
             v_x_real, v_y_real = Variable(x_real), Variable(y_real)
             # find adversarial example
-            # with torch.no_grad():
-            #     ones.resize_(y_real.size())
-            ones.data.resize_(y_real.size())
+            with torch.no_grad():
+                ones.resize_(y_real.size())
             v_x_real_adv = attack_Linf_PGD(v_x_real, ones, v_y_real, dis, Ld, opt.adv_steps, opt.epsilon)
             d_real_bin, d_real_multi = dis(v_x_real_adv)
             # accuracy for real images
